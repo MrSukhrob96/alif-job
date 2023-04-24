@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "80:80"
+    environment:
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=sukhrobazimov1996@gmail.com
+      - SMTP_PASSWORD=Spitamen1111
+    depends_on:
+      - mysql
+    links:
+      - mysql:mysql
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+volumes:
+  dbdata:
